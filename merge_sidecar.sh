@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -e
 set -o pipefail
 
@@ -62,6 +62,7 @@ for zip_file in "$input_dir"/*.zip; do
   unzip -q "$zip_file" -d "$extract_dir"
 
   find "$extract_dir" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.mp4" -o -iname "*.mov" \) | while read -r media_file; do
+    rel_path="${media_file#$extract_dir/}"
     sidecar="${media_file}.supplemental-metadata.json"
     if [ -f "$sidecar" ]; then
       echo "Merging metadata for $rel_path using supplemental metadata"
